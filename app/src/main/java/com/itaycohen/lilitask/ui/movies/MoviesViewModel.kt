@@ -2,20 +2,19 @@ package com.itaycohen.lilitask.ui.movies
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.widget.ImageView
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.itaycohen.lilitask.R
 import com.itaycohen.lilitask.models.Movie
 import com.itaycohen.lilitask.models.QueryState
 import com.itaycohen.lilitask.repositories.movies.MoviesRepository
 import com.itaycohen.lilitask.ui.movies.grid.GridItemViewHolder
-import com.itaycohen.lilitask.ui.movies.grid.MoviesCollectionFragment
 import com.itaycohen.lilitask.ui.movies.grid.MoviesCollectionFragmentDirections
+import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -28,10 +27,13 @@ import javax.inject.Inject
 @SuppressLint("StaticFieldLeak")
 class MoviesViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context, // No worry from memory leak - it is the app context
+    savedStateHandle: SavedStateHandle,
     private val repository: MoviesRepository
 ) : ViewModel(), GridItemViewHolder.Listener {
 
     val moviesLiveData: LiveData<List<Movie>> = MutableLiveData(listOf())
+    val activeMovieLiveData: LiveData<Movie?> = MutableLiveData(null)
+    var activeMoviePosition: Int = -1
     val moviesQueryStateLiveData : LiveData<QueryState> = MutableLiveData(QueryState.Idle)
 
     fun refreshMovies() = viewModelScope.launch {
@@ -52,9 +54,11 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    override fun onItemClick(v: View, bindingAdapterPos: Int) {
+    override fun onItemClick(v: ImageView, bindingAdapterPos: Int) {
         val movie = moviesLiveData.value!![bindingAdapterPos]
+        (activeMovieLiveData as MutableLiveData).value = movie
         movie.id?.also {
+            activeMoviePosition = bindingAdapterPos
             val action = MoviesCollectionFragmentDirections.actionMoviesCollectionFragmentToMovieFragment(it)
             v.findNavController().navigate(action)
         }

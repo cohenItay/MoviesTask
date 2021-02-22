@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.itaycohen.lilitask.R
+import com.itaycohen.lilitask.databinding.ActivityGlobalBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -13,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class GlobalActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityGlobalBinding
 
     /**
      * attempting to retrieve the NavController in onCreate() of an Activity
@@ -25,10 +29,8 @@ class GlobalActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_global)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        binding = ActivityGlobalBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.topAppBar.setupWithNavController(navController)
     }
 }

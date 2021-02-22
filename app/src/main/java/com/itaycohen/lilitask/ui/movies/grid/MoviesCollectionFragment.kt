@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.itaycohen.lilitask.R
@@ -15,17 +16,17 @@ import com.itaycohen.lilitask.models.QueryState
 import com.itaycohen.lilitask.ui.movies.MoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class MoviesCollectionFragment : Fragment() {
 
-    private val moviesViewModel: MoviesViewModel by viewModels()
+    private val moviesViewModel: MoviesViewModel by hiltNavGraphViewModels(R.id.moviesCollectionFragment)
     private var _binding: FragmentMoviesCollectionBinding? = null
     private val binding
         get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         moviesViewModel.refreshMovies()
     }
 
@@ -40,11 +41,11 @@ class MoviesCollectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with (moviesViewModel) {
+        with(moviesViewModel) {
             moviesQueryStateLiveData.observe(viewLifecycleOwner, moviesQueryStateObserver)
             moviesLiveData.observe(viewLifecycleOwner, moviesDataObserver)
         }
-        with (binding.moviesRecyclerView) {
+        with(binding.moviesRecyclerView) {
             adapter = MoviesGridAdapter(moviesViewModel)
             setHasFixedSize(true)
             addItemDecoration(
@@ -61,8 +62,6 @@ class MoviesCollectionFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 
     private val moviesQueryStateObserver = Observer<QueryState> { qs ->
         when (qs) {

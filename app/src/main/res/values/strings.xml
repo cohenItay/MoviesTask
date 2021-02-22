@@ -2,4 +2,6 @@
     <string name="app_name">LiliTask</string>
     <string name="problem_with_fetching_data">There is a problem with fetching the data</string>
     <string name="desc_movie_background_image">A background image for the selected movie</string>
+    <string name="directed_by">Directed by: %s</string>
+    <string name="actors">Actors: %s</string>
 </resources>

@@ -1,27 +1,22 @@
 package com.itaycohen.lilitask.ui.movies.grid
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.target.CustomViewTarget
-import com.bumptech.glide.request.transition.Transition
 import com.itaycohen.lilitask.R
 import com.itaycohen.lilitask.databinding.MovieGridItemBinding
 import com.itaycohen.lilitask.models.Movie
 
 class GridItemViewHolder(
-    private val gridItemBinding: MovieGridItemBinding,
+    val gridItemBinding: MovieGridItemBinding,
     private val interactionListener: Listener
 ) : RecyclerView.ViewHolder(gridItemBinding.root) {
 
     init {
-        gridItemBinding.root.setOnClickListener {
-            interactionListener.onItemClick(it, bindingAdapterPosition)
+        gridItemBinding.movieImageView.setOnClickListener {
+            interactionListener.onItemClick(it as ImageView, bindingAdapterPosition)
         }
     }
 
@@ -39,6 +34,6 @@ class GridItemViewHolder(
     }
 
     fun interface Listener {
-        fun onItemClick(v: View, bindingAdapterPos: Int)
+        fun onItemClick(v: ImageView, bindingAdapterPos: Int)
     }
 }
