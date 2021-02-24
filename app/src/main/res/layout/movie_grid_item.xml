@@ -43,16 +43,20 @@
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            tools:text="The terminator"
+            tools:text="The terminator "
+            android:gravity="start"
+            android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintBottom_toTopOf="@id/yearTextView"
             android:layout_marginBottom="2dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
 
         <TextView
             android:id="@+id/yearTextView"
@@ -61,6 +65,7 @@
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
             tools:text="1949"
+            android:textAlignment="textStart"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"

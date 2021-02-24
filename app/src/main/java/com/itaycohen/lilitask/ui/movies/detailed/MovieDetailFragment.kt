@@ -21,6 +21,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialContainerTransform
 import com.itaycohen.lilitask.R
@@ -65,7 +66,7 @@ class MovieDetailFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun bindToMovieInfo(movie: Movie) = with (binding) {
-        requireActivity().actionBar?.title = movie.title
+        requireActivity().findViewById<MaterialToolbar>(R.id.topAppBar)?.title = movie.title
         Glide.with(backgroundImageView)
             .load(movie.posterUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
